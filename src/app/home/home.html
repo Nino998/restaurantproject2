@@ -1,0 +1,73 @@
+<div class="main-container">
+  
+  <div class="top-nav">
+    <ul class="categories-list">
+      <li [class.active]="activeCategory() == 0" (click)="showFoods()">All</li>
+      @for (item of categories(); track $index) {
+          <li [class.active]="item.id == activeCategory()" (click)="changeCat(item.id)"> {{item.name}} </li>
+      }
+    </ul>
+
+    <a routerLink="/cart" class="cart-btn">
+      Cart 🛒
+      <span class="cart-badge">{{ cart.count() }}</span>
+    </a>
+  </div>
+
+  <div class="content-wrapper">
+    
+    <div class="filter-sidebar">
+      <h3>Filter</h3>
+      
+      <div class="filter-group">
+        <label>Spiciness: {{ spiciness() }}</label>
+        <input type="range" min="0" max="3" [ngModel]="spiciness()" (ngModelChange)="spiciness.set($event)">
+      </div>
+
+      <div class="filter-group">
+        <label>
+          <input type="checkbox" [ngModel]="noNuts()" (ngModelChange)="noNuts.set($event)"> No Nuts
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label>
+          <input type="checkbox" [ngModel]="vegetarian()" (ngModelChange)="vegetarian.set($event)"> Vegetarian Only
+        </label>
+      </div>
+
+      <button (click)="applyFilter()">APPLY FILTER</button>
+      <button (click)="resetFilter()">RESET</button>
+    </div>
+
+  
+    <main class="products-main">
+        @for (item of foodData(); track item.id) {
+            <div class="card">
+                <img [src]="item.image" [alt]="item.name" />
+                <h3> {{ item.name }} </h3>
+                
+                <p class="spiciness-text">Spiciness: {{ item.spiciness }}</p>
+                
+        
+                <div class="indicators">
+                  <span class="indicator-item">
+                    <span class="dot" [class.red-dot]="item.nuts" [class.gray-dot]="!item.nuts"></span>
+                    Nuts
+                  </span>
+
+                  <span class="indicator-item">
+                    <span class="dot" [class.red-dot]="item.vegeterian" [class.gray-dot]="!item.vegeterian"></span>
+                    Vegeterian
+                  </span>
+                </div>
+
+                <p class="price">{{ item.price }} $</p>
+
+                <button class="add-cart-btn" (click)="damateba(item)">Add to cart</button>
+            </div>
+        }
+    </main>
+
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="cart-container">
+  <h2 class="cart-title">
+    Cart 🛒
+    <span class="cart-badge">{{ cart.count() }}</span>
+  </h2>
+
+  <div class="cart-top">
+    <a routerLink="/" style="text-decoration: none; background: #e56b2f; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold;">← Back to Menu</a>
+  </div>
+
+  @if (cartItems().length === 0) {
+    <div class="empty-cart">
+      <p>Your cart is empty</p>
+    </div>
+  } @else {
+    <div class="cart-header">
+      <span class="actions"></span>
+      <span class="product-info">Product</span>
+      <span class="col-qty">Qty</span>
+      <span class="col-price">Price</span>
+      <span class="col-total">Total</span>
+    </div>
+
+    @for (item of cartItems(); track item.product.id) {
+      <div class="cart-row">
+        <div class="actions">
+          <button class="delete-btn" (click)="removeItem(item.product.id)">✕</button>
+        </div>
+
+        <div class="product-info">
+          <img [src]="item.product.image" [alt]="item.product.name" class="product-img" />
+          <span class="product-name">{{ item.product.name }}</span>
+        </div>
+
+        <div class="qty-control">
+          <button (click)="changeQuantity(item, -1)">-</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="changeQuantity(item, 1)">+</button>
+        </div>
+
+        <div class="price">{{ item.product.price }} GEL</div>
+        <div class="total-item-price">{{ item.product.price * item.quantity }} GEL</div>
+      </div>
+    }
+
+    <div class="cart-footer">
+      <h3>Total : <span>{{ totalPrice() }} GEL</span></h3>
+    </div>
+  }
+</div>
